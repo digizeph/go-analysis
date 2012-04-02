@@ -1,0 +1,23 @@
+.
+├── data
+│   ├── CIPHERDB
+│   │   ├── cipherS1.txt
+│   │   ├── cipherS2.txt
+│   │   └── dcipher.txt
+│   ├── GODB
+│   │   ├── gene_association.goa_human
+│   │   ├── gene_ontology.obo
+│   │   └── Readme_gene_association.txt
+│   ├── MAP
+│   │   ├── entrez.txt
+│   │   ├── gene_readme.txt
+│   │   ├── gene.txt
+│   │   └── omim.txt
+│   └── TARGETS
+│       └── tumor.txt
+├── dirtree.txt
+├── extract.pl
+├── logs
+└── prep
+
+7 directories, 13 files
