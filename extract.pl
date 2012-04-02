@@ -69,8 +69,6 @@ while(<TARGET>){
         {   
             $sorthash{$id}=$value;
         }
-
-
     }
 
     # Sort the hash! Largest first.
