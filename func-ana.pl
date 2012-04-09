@@ -15,9 +15,10 @@ use GO::Utils::File qw (GenesFromFile);
 
 my $ontologyFile = 'data/GODB/gene_ontology.obo';
 my $aspect = 'F';
+#my $annotationFile = 'data/GODB/gene_association-large.goa_human';
 my $annotationFile = 'data/GODB/gene_association.goa_human';
 
-my $totalNum = 18410;
+my $totalNum = 48410;
 my $ontology   = GO::OntologyProvider::OboParser->new(ontologyFile => $ontologyFile,
                               aspect       => $aspect);
 my $annotation = GO::AnnotationProvider::AnnotationParser->new(annotationFile=>$annotationFile);
@@ -26,6 +27,7 @@ my $termFinder = GO::TermFinder->new(annotationProvider => $annotation,
                      ontologyProvider   => $ontology,
                      totalNumGenes      => $totalNum,
                      aspect             => $aspect);
+                     
 
 
 my @files;
@@ -76,4 +78,5 @@ foreach my $file (sort @files){
         
     }
     close OUT;
+
 }
