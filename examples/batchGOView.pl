@@ -103,7 +103,7 @@ my $listFh = IO::File->new($htmlFile, q{>} )|| die "Cannot make $htmlFile : $!";
 
 foreach my $file (@ARGV){
    
-    print "Analyzing $file\n";
+    print "Analyzing $file\n"annotation;
 
     # get the genes in the file
 
