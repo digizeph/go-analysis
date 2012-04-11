@@ -43,7 +43,7 @@ print "\n$miss/$wc\n";
 
 
 # Get sorted gene-symbol list
-open (TARGET,"data/TARGETS/tumor.txt") or die "Cannot open tumor.txt";
+open (TARGET,"data/TARGETS/full-list.txt") or die "Cannot open tumor.txt";
 
 tie my @db, 'Tie::File', "data/CIPHERDB/dcipher.txt" or die "Cannot tie :$!";
 
@@ -53,6 +53,7 @@ unless(-d "prep"){
 
 my $count=1;
 while(<TARGET>){
+    last if /^\s\n/;
     my %sorthash;
     my @tuple = split(" ",$_);
     print "$count : $tuple[0] $tuple[1]\n";

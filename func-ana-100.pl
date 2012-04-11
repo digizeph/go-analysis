@@ -87,7 +87,7 @@ foreach my $file (sort @files){
 
     my $report = GO::TermFinderReport::Text->new();
 
-    my $cutoff = 0.05;
+    my $cutoff = $conf->{'pvalueCutOff'};
 
     $file =~ /(.*)\.symbol-100/;
     my $name = $1;
@@ -122,7 +122,7 @@ foreach my $file (sort @files){
     my $htmlFile = &GenerateHTMLFile($file, $goView->imageMap, \@pvalues,
 				     scalar($termFinder->genesDatabaseIds), "Terms for $file"); 
 
-    print $listFh a({-href   => $htmlFile,
+    print $listFh a({-href   => "$name/$htmlFile",
 		     -target => 'result'}, $htmlFile), br;
 
     # if they had no significant P-values
