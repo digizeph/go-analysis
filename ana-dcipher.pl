@@ -56,17 +56,14 @@ my $listFh = IO::File->new($htmlFile, q{>} )|| die "Cannot make $htmlFile : $!";
 
 my @files;
 my $indir="prep";
-my $outdir="reports2";
+my $outdir="reports";
 
 mkdir $outdir if !(-d $outdir);
 # add input files into array
-#sub wanted{
-#	push (@files, $_) if $_=~/.*\.symbol-100/;
-#}
-#find (\&wanted, $indir);
-
-push (@files,'TA-drugable');
-push (@files,'TP-drugable');
+sub wanted{
+	push (@files, $_) if $_=~/.*\.symbol-100/;
+}
+find (\&wanted, $indir);
 
 
 
@@ -81,7 +78,7 @@ push (@files,'TP-drugable');
 foreach my $file (sort @files){
     my $outFile = $file.'.txt';
 
-    my @genes = GenesFromFile($file);
+    my @genes = GenesFromFile("$indir/$file");
 
     my @pvalues    = $termFinder->findTerms(genes        => \@genes,
                         calculateFDR => 1);
@@ -90,17 +87,19 @@ foreach my $file (sort @files){
 
     my $report = GO::TermFinderReport::Text->new();
 
-    my $cutoff = 0.05;
+    my $cutoff = $conf->{'pvalueCutOff'};
 
-
-    open (OUT, ">$outdir/$outFile") or die "open outfile failed!";
+    $file =~ /(.*)\.symbol-100/;
+    my $name = $1;
+    mkdir "$outdir/$name" unless -d "$outdir/$name";
+    open (OUT, ">$outdir/$name/$outFile") or die "open outfile failed!";
 
     my $numHypotheses = $report->print(pvalues  => \@pvalues,
                        numGenes => scalar(@genes),
                        totalNum => $totalNum,
                        cutoff   => $cutoff,
                        fh       => \*OUT);
-                       
+     $conf->{'outDir'}="$outdir/$name/";
                        
 	my $goView = GO::View->new(-ontologyProvider   => $ontology,
 			       -annotationProvider => $annotation,
@@ -123,7 +122,7 @@ foreach my $file (sort @files){
     my $htmlFile = &GenerateHTMLFile($file, $goView->imageMap, \@pvalues,
 				     scalar($termFinder->genesDatabaseIds), "Terms for $file"); 
 
-    print $listFh a({-href   => $htmlFile,
+    print $listFh a({-href   => "$name/$htmlFile",
 		     -target => 'result'}, $htmlFile), br;
 
     # if they had no significant P-values
