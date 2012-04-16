@@ -43,12 +43,14 @@ print "\n$miss/$wc\n";
 
 
 # Get sorted gene-symbol list
-open (TARGET,"data/TARGETS/tumor.txt") or die "Cannot open tumor.txt";
+open (TARGET,"data/TARGETS/full-omim.txt") or die "Cannot open tumor.txt";
 
-tie my @db, 'Tie::File', "data/CIPHERDB/dcipher.txt" or die "Cannot tie :$!";
+tie my @db, 'Tie::File', "data/CIPHERDB/cipherS1.txt" or die "Cannot tie :$!";
 
-unless(-d "prep"){
-    mkdir "prep" or die;
+my $outdir = "prep/cipher/";
+
+unless(-d $outdir){
+    `mkdir -p $outdir`;
 }
 
 my $count=1;
@@ -58,8 +60,8 @@ while(<TARGET>){
     my @tuple = split(" ",$_);
     print "$count : $tuple[0] $tuple[1]\n";
     $count++;
-    open (OUT100, ">prep/$tuple[0]-$tuple[1].symbol-100");
-    open (OUT, ">prep/$tuple[0]-$tuple[1].symbol");
+    open (OUT100, ">$outdir/$tuple[0]-$tuple[1].symbol-100");
+    open (OUT, ">$outdir/$tuple[0]-$tuple[1].symbol");
     # Read into sorthash.
     my $id = 0;
     my @values = split(" ",$db[$tuple[1]-1]); # line of values;

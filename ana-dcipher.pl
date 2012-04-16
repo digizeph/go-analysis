@@ -19,6 +19,16 @@ use GO::TermFinderReport::Text;
 use GO::Utils::File    qw (GenesFromFile);
 use GO::Utils::General qw (CategorizeGenes);
 
+# HTMLs
+my $confFile = "go-dcipher.conf";
+my $conf = &ReadConfFile($confFile);
+
+my $outdir=$conf->{'outDir'};
+if( !(-d $outdir)){
+	print "$outdir does not exists\n";
+	`mkdir -p $outdir`;
+}
+
 my $ontologyFile = 'data/GODB/gene_ontology.obo';
 my $aspect = 'F';
 my $annotationFile = 'data/GODB/gene_association-large.goa_human';
@@ -39,9 +49,6 @@ my $termFinder = GO::TermFinder->new(annotationProvider => $annotation,
                      totalNumGenes      => $totalNum,
                      aspect             => $aspect);
 
-# HTMLs
-my $confFile = "GoView.conf";
-my $conf = &ReadConfFile($confFile);
 
 $conf->{'totalNumGenes'} ||= $annotation->numAnnotatedGenes;
 #push(@additionalArgs, ('totalNumGenes', $conf->{'totalNumGenes'}));
@@ -55,13 +62,10 @@ my $listFh = IO::File->new($htmlFile, q{>} )|| die "Cannot make $htmlFile : $!";
 
 
 my @files;
-my $indir="prep";
-my $outdir="reports";
-
-mkdir $outdir if !(-d $outdir);
+my $indir="prep/dcipher";
 # add input files into array
 sub wanted{
-	push (@files, $_) if $_=~/.*\.symbol-100/;
+    push (@files, $_) if $_=~/.*\.symbol-100/;
 }
 find (\&wanted, $indir);
 
