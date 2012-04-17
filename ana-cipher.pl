@@ -64,8 +64,9 @@ my $listFh = IO::File->new($htmlFile, q{>} )|| die "Cannot make $htmlFile : $!";
 my @files;
 my $indir="prep/cipher";
 # add input files into array
+my $pattern = shift(@ARGV) || ".*";
 sub wanted{
-    push (@files, $_) if $_=~/.*\.symbol-100/;
+    push (@files, $_) if $_=~/$pattern\.symbol-100/;
 }
 find (\&wanted, $indir);
 

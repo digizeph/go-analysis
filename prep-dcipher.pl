@@ -54,14 +54,17 @@ unless(-d $outdir){
 }
 
 my $count=1;
+my $maxCount=`wc -l data/CIPHERDB/dcipher.txt | awk '{print \$1}'`;
+print "maxCount = $maxCount\n";
 while(<TARGET>){
     last if /^\s\n/;
+    last if $count>$maxCount;
     my %sorthash;
     my @tuple = split(" ",$_);
     print "$count : $tuple[0] $tuple[1]\n";
     $count++;
-    open (OUT100, ">$outdir/$tuple[0]-$tuple[1].symbol-100");
-    open (OUT, ">$outdir/$tuple[0]-$tuple[1].symbol");
+    open (OUT100, ">$outdir/$tuple[0].symbol-100");
+    open (OUT, ">$outdir/$tuple[0].symbol");
     # Read into sorthash.
     my $id = 0;
     my @values = split(" ",$db[$tuple[1]-1]); # line of values;

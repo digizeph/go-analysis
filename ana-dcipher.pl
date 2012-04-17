@@ -31,8 +31,8 @@ if( !(-d $outdir)){
 
 my $ontologyFile = 'data/GODB/gene_ontology.obo';
 my $aspect = 'F';
-my $annotationFile = 'data/GODB/gene_association-large.goa_human';
-#my $annotationFile = 'data/GODB/gene_association.goa_human';
+#my $annotationFile = 'data/GODB/gene_association-large.goa_human';
+my $annotationFile = 'data/GODB/gene_association.goa_human_hgnc';
 
 my $totalNum = 48410;
 
@@ -64,8 +64,9 @@ my $listFh = IO::File->new($htmlFile, q{>} )|| die "Cannot make $htmlFile : $!";
 my @files;
 my $indir="prep/dcipher";
 # add input files into array
+my $pattern = shift(@ARGV) || ".*";
 sub wanted{
-    push (@files, $_) if $_=~/.*\.symbol-100/;
+    push (@files, $_) if $_=~/$pattern\.symbol-100/;
 }
 find (\&wanted, $indir);
 
@@ -115,7 +116,7 @@ foreach my $file (sort @files){
 			       -nodeUrl            => $conf->{'goidUrl'},
 			       -geneUrl            => $conf->{'geneUrl'},
 			       -pvalueCutOff       => $conf->{'pvalueCutOff'},
-			       -maxTopNodeToShow   => 4);   # 4 is specifically suitable
+			       -maxTopNodeToShow   => 6);   # 4 is specifically suitable
 	my $imageFile;
 	if ($goView->graph) {
 	
