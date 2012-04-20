@@ -20,7 +20,7 @@ use GO::Utils::File    qw (GenesFromFile);
 use GO::Utils::General qw (CategorizeGenes);
 
 # HTMLs
-my $confFile = "go-dcipher.conf";
+my $confFile = "go-pop-dcipher.conf";
 my $conf = &ReadConfFile($confFile);
 
 my $outdir=$conf->{'outDir'};
@@ -37,6 +37,13 @@ my $annotationFile = 'data/GODB/gene_association.goa_human_hgnc';
 my $totalNum = 48410;
 
 
+#### Read local population!
+my @gene;
+open (POP,"data/MAP/population.txt") or die "$!";
+chomp(@gene=(<POP>));
+close POP;
+
+
 
 # Create GO objects.
 
@@ -46,7 +53,8 @@ my $annotation = GO::AnnotationProvider::AnnotationParser->new(annotationFile=>$
 
 my $termFinder = GO::TermFinder->new(annotationProvider => $annotation,
                      ontologyProvider   => $ontology,
-                     totalNumGenes      => $totalNum,
+                     #totalNumGenes      => $totalNum,
+                     population         => \@gene,
                      aspect             => $aspect);
 
 

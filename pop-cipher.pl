@@ -20,7 +20,7 @@ use GO::Utils::File    qw (GenesFromFile);
 use GO::Utils::General qw (CategorizeGenes);
 
 # HTMLs
-my $confFile = "go-dcipher.conf";
+my $confFile = "go-pop-cipher.conf";
 my $conf = &ReadConfFile($confFile);
 
 my $outdir=$conf->{'outDir'};
@@ -31,10 +31,18 @@ if( !(-d $outdir)){
 
 my $ontologyFile = 'data/GODB/gene_ontology.obo';
 my $aspect = 'F';
-#my $annotationFile = 'data/GODB/gene_association-large.goa_human';
 my $annotationFile = 'data/GODB/gene_association.goa_human_hgnc';
+#my $annotationFile = 'data/GODB/gene_association.goa_human';
 
 my $totalNum = 48410;
+
+
+
+#### Read local population!
+my @gene;
+open (POP,"data/MAP/population.txt") or die "$!";
+chomp(@gene=(<POP>));
+close POP;
 
 
 
@@ -46,7 +54,8 @@ my $annotation = GO::AnnotationProvider::AnnotationParser->new(annotationFile=>$
 
 my $termFinder = GO::TermFinder->new(annotationProvider => $annotation,
                      ontologyProvider   => $ontology,
-                     totalNumGenes      => $totalNum,
+                     #totalNumGenes      => $totalNum,
+                     population         => \@gene,
                      aspect             => $aspect);
 
 
@@ -62,7 +71,7 @@ my $listFh = IO::File->new($htmlFile, q{>} )|| die "Cannot make $htmlFile : $!";
 
 
 my @files;
-my $indir="prep/dcipher";
+my $indir="prep/cipher";
 # add input files into array
 my $pattern = shift(@ARGV) || ".*";
 sub wanted{

@@ -12,7 +12,7 @@ while(<SYMBOL>){
 # map every local column to entrezID
 while(<ENTREZ>){
     my @in = split(" ",$_);
-    print OUT "$ent2sym{$in[0]}\n" unless $in[0] eq "";
+    print OUT "$ent2sym{$in[0]}\n" unless  $ent2sym{$in[0]}eq "";
 #    $loc2ent{$in[1]+1} = $in[0];    # localID start from 0, have to add one
 }
 

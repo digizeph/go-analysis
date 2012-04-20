@@ -31,7 +31,7 @@ if( !(-d $outdir)){
 
 my $ontologyFile = 'data/GODB/gene_ontology.obo';
 my $aspect = 'F';
-my $annotationFile = 'data/GODB/gene_association-large.goa_human';
+my $annotationFile = 'data/GODB/gene_association.goa_human_hgnc';
 #my $annotationFile = 'data/GODB/gene_association.goa_human';
 
 my $totalNum = 48410;
